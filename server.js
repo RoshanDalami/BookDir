@@ -19,14 +19,16 @@ app.use(express.json())
 //connecting to the routes
 const indexRouter = require('./routes/index')
 const authorRouter = require('./routes/authors.js')
+const bookRouter = require('./routes/books.js')
 app.use('/',indexRouter)
 app.use('/authors',authorRouter)
+app.use('/books',bookRouter)
 
 //connecting to the dataBase
 
 //  const db = require('./setup/mykeys').myKey;   
  const db = process.env.DATABASE_URL
-mongoose.connect(db).then(()=>console.log('DataBase Connected Successfuly')).catch((error)=>console.log('fuck error'))
+mongoose.connect(db).then(()=>console.log('DataBase Connected Successfuly')).catch((error)=>console.log(error))
 
 app.listen(PORT,()=>{
     console.log(`Server is running ${PORT}`)
