@@ -4,8 +4,9 @@ const Book =require('../models/Book')
 const Author = require('../models/Author')
 const multer= require('multer')
 const path = require('path')
+const fs = require('fs')
 const { request } = require('express')
-const imageMimeType = ['images/jpeg','images/png','images/gif']
+const imageMimeType = ['image/jpeg','image/png','image/gif']
 const uploadPath = path.join('public',Book.coverImageBasePath)
 const upload = multer({
    dest : uploadPath,
@@ -14,10 +15,22 @@ const upload = multer({
    }
 })
 //For all book route
-route.get('/',async (request,response)=>{
-   response.render('')
-    
-})
+route.get('/', async (req, res) => {
+   let query = Book.find()
+   if (req.query.title != null && req.query.title != '') {
+     query = query.regex('title', new RegExp(req.query.title, 'i'))
+   }
+  
+   try {
+     const books = await query.exec()
+     res.render('books/index', {
+       books: books,
+       searchOptions: req.query
+     })
+   } catch {
+     res.redirect('/')
+   }
+ })
 //for new books
 route.get('/new',async (request,response)=>{
    renderNewPage(response,new Book())
@@ -37,21 +50,31 @@ route.post('/',upload.single('cover'),async (request,response)=>{
    try {
       const newBook = await book.save()
       // response.redirect('book/${newBook.id')
-      response.redirect('books')
+      response.redirect('/books')
    } catch (error) {
+      if(book.coverImageName!= null){
+         reomveBookCover(book.coverImageName)
+      }
+     
       renderNewPage(response, book , true)
       
    }
 })
+function reomveBookCover(fileName){
+   fs.unlink(path.join(uploadPath,fileName),err =>{
+      if(err) console.error(err)
+   })
+}
 
 async function renderNewPage(response,book,hasError = false){
    try{
       const authors = await Author.find({})
       const params = {
          authors:authors,
-         book : book
+         book : book,
+        
       }
-      if(hasError) params.errorMessage = 'Error Creating Book'
+      if(hasError)  params.errorMessage = 'Error Creating Book'
       
       response.render('books/new',params)
      }catch(error){
