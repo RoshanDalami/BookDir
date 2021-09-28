@@ -48,9 +48,10 @@ route.post('/',upload.single('cover'),async (request,response)=>{
       title : request.body.title,
       author: request.body.author,
       publishDate:new Date(request.body.publishDate),
+      pageCount : request.body.pageCount,
       description:request.body.description,
-      coverImageName : fileName,
-      pageCount : request.body.pageCount
+      // coverImageName : fileName,
+      
 
    })
    try {
@@ -61,7 +62,7 @@ route.post('/',upload.single('cover'),async (request,response)=>{
       if(book.coverImageName!= null){
          reomveBookCover(book.coverImageName)
       }
-     
+     console.log(error)
       renderNewPage(response, book , true)
       
    }
