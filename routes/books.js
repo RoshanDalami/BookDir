@@ -76,7 +76,7 @@ async function renderNewPage(response,book,hasError = false){
    try{
       const authors = await Author.find({})
       const params = {
-         authors:authors,
+         authors: authors,
          book : book,
         
       }
