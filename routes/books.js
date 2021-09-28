@@ -6,7 +6,7 @@ const multer= require('multer')
 const path = require('path')
 const fs = require('fs')
 const { request } = require('express')
-const imageMimeType = ['image/jpeg','image/png','image/gif']
+const imageMimeType = ['image/jpeg','image/png','images/gif']
 const uploadPath = path.join('public',Book.coverImageBasePath)
 const upload = multer({
    dest : uploadPath,
@@ -44,7 +44,7 @@ route.post('/',upload.single('cover'),async (request,response)=>{
       publishDate:new Date(request.body.publishDate),
       description:request.body.description,
       coverImageName : fileName,
-      pageCount : parseInt(request.body.pageCount)
+      pageCount : request.body.pageCount
 
    })
    try {
