@@ -14,8 +14,7 @@ route.get('/',async (request,response)=>{
            searchOptions:request.query}) 
     } catch  {
         response.redirect('/')
-    }
-    
+    }  
 })
 //for new author
 route.get('/new',(request,response)=>{
