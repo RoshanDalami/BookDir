@@ -50,7 +50,7 @@ route.post('/',upload.single('cover'),async (request,response)=>{
       publishDate:new Date(request.body.publishDate),
       pageCount : request.body.pageCount,
       description:request.body.description,
-      // coverImageName : fileName,
+      coverImageName : fileName,
       
 
    })
