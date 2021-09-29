@@ -7,6 +7,7 @@ const app = express()
 const expressLayouts = require('express-ejs-layouts')
 const mongoose = require('mongoose')
  const bodyParser = require('body-parser')
+ const methodOverride = require('method-override')
 const PORT = process.env.PORT || 5000
 //Setting up view engines
 app.set('view engine','ejs')
@@ -16,6 +17,7 @@ app.use(expressLayouts)
 app.use(express.static('public'))
 app.use(express.urlencoded({limit:"10mb",extended : false}))
 app.use(express.json())
+app.use(methodOverride('_method'))
 //connecting to the routes
 const indexRouter = require('./routes/index')
 const authorRouter = require('./routes/authors.js')
